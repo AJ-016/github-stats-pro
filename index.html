@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GitHub Stats Pro | Ultimate Customizer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #050505; color: #e5e5e5; font-family: 'Inter', sans-serif; }
+        .ctrl-panel { background: #0d1117; border: 1px solid #1a1a1a; }
+        .input-box { background: #161b22; border: 1px solid #30363d; color: white; border-radius: 6px; padding: 8px; width: 100%; }
+        input[type="range"] { accent-color: #3b82f6; }
+    </style>
+</head>
+<body class="flex flex-col lg:flex-row min-h-screen">
+
+    <!-- Sidebar Controls -->
+    <div class="w-full lg:w-96 p-8 space-y-6 ctrl-panel border-r border-gray-900 overflow-y-auto">
+        <div>
+            <h1 class="text-2xl font-bold text-blue-500">Stats Pro</h1>
+            <p class="text-xs text-gray-500 uppercase tracking-widest">Ultimate Customizer</p>
+        </div>
+        
+        <div class="space-y-4">
+            <section>
+                <label class="text-xs font-bold text-gray-400">GITHUB USERNAME</label>
+                <input type="text" id="user" value="AJ-016" class="input-box mt-1 outline-none focus:border-blue-500">
+            </section>
+
+            <section class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="text-xs font-bold text-gray-400">BG COLOR</label>
+                    <input type="color" id="bg" value="#050505" class="w-full h-10 mt-1 rounded cursor-pointer bg-transparent border-none">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-gray-400">BORDER CLR</label>
+                    <input type="color" id="border_clr" value="#1a1a1a" class="w-full h-10 mt-1 rounded cursor-pointer bg-transparent border-none">
+                </div>
+            </section>
+
+            <section class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="text-xs font-bold text-gray-400">TITLE COLOR</label>
+                    <input type="color" id="title_clr" value="#ffffff" class="w-full h-10 mt-1 rounded cursor-pointer bg-transparent border-none">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-gray-400">TEXT COLOR</label>
+                    <input type="color" id="text_clr" value="#888888" class="w-full h-10 mt-1 rounded cursor-pointer bg-transparent border-none">
+                </div>
+            </section>
+
+            <section>
+                <label class="text-xs font-bold text-gray-400">FONT FAMILY</label>
+                <select id="font_family" class="input-box mt-1">
+                    <option value="Segoe UI">Segoe UI (Default)</option>
+                    <option value="JetBrains Mono">JetBrains Mono (Coding)</option>
+                    <option value="Inter">Inter (Clean)</option>
+                </select>
+            </section>
+
+            <section>
+                <label class="text-xs font-bold text-gray-400">FONT SIZE: <span id="fs_val">14</span>px</label>
+                <input type="range" id="font_size" min="12" max="20" value="14" class="w-full mt-2">
+            </section>
+
+            <section class="space-y-2 pt-2 border-t border-gray-800">
+                <label class="text-xs font-bold text-gray-400 block mb-2">VISIBLE STATS</label>
+                <div class="grid grid-cols-2 gap-2">
+                    <label class="flex items-center space-x-2 text-sm cursor-pointer"><input type="checkbox" id="show_age" checked class="accent-blue-500"> <span>Account Age</span></label>
+                    <label class="flex items-center space-x-2 text-sm cursor-pointer"><input type="checkbox" id="show_repo" checked class="accent-blue-500"> <span>Top Repo</span></label>
+                    <label class="flex items-center space-x-2 text-sm cursor-pointer"><input type="checkbox" id="show_lang" checked class="accent-blue-500"> <span>Stack</span></label>
+                    <label class="flex items-center space-x-2 text-sm cursor-pointer"><input type="checkbox" id="show_commits" checked class="accent-blue-500"> <span>Commits</span></label>
+                </div>
+            </section>
+        </div>
+
+        <div class="flex gap-2 pt-4">
+            <button onclick="update()" class="flex-1 bg-blue-600 hover:bg-blue-700 py-3 rounded-lg font-bold transition">Generate</button>
+            <button onclick="resetToDefault()" class="px-4 bg-gray-800 hover:bg-gray-700 rounded-lg transition" title="Reset Styles">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Preview Area -->
+    <div class="flex-1 flex flex-col items-center justify-center p-12 space-y-8 bg-black">
+        <div class="p-6 bg-[#050505] border border-dashed border-gray-800 rounded-2xl shadow-2xl">
+            <img id="previewImg" src="" alt="Preview Loading..." class="max-w-full">
+        </div>
+        
+        <div class="w-full max-w-2xl space-y-2">
+            <div class="flex justify-between items-center">
+                <span class="text-xs font-mono text-gray-600">MARKDOWN LINK</span>
+                <button onclick="copyToClipboard()" class="text-xs text-blue-500 hover:underline">Copy Link</button>
+            </div>
+            <code id="codeOutput" class="block p-4 bg-[#0d1117] border border-gray-800 text-green-500 text-xs rounded-lg break-all"></code>
+        </div>
+    </div>
+
+    <script>
+        const defaults = {
+            bg: "#050505",
+            title_clr: "#ffffff",
+            text_clr: "#888888",
+            border_clr: "#1a1a1a",
+            font_size: 14,
+            font_family: "Segoe UI"
+        };
+
+        function resetToDefault() {
+            document.getElementById('bg').value = defaults.bg;
+            document.getElementById('title_clr').value = defaults.title_clr;
+            document.getElementById('text_clr').value = defaults.text_clr;
+            document.getElementById('border_clr').value = defaults.border_clr;
+            document.getElementById('font_size').value = defaults.font_size;
+            document.getElementById('font_family').value = defaults.font_family;
+            update();
+        }
+
+        function update() {
+            const u = document.getElementById('user').value.trim() || 'AJ-016';
+            const bg = document.getElementById('bg').value.replace('#', '');
+            const tc = document.getElementById('title_clr').value.replace('#', '');
+            const txt = document.getElementById('text_clr').value.replace('#', '');
+            const bc = document.getElementById('border_clr').value.replace('#', '');
+            const fs = document.getElementById('font_size').value;
+            const ff = document.getElementById('font_family').value;
+            
+            document.getElementById('fs_val').innerText = fs;
+
+            const params = new URLSearchParams({
+                username: u, bg: bg, title_clr: tc, text_clr: txt, border_clr: bc,
+                font_size: fs, font_family: ff,
+                show_age: document.getElementById('show_age').checked,
+                show_repo: document.getElementById('show_repo').checked,
+                show_lang: document.getElementById('show_lang').checked,
+                show_commits: document.getElementById('show_commits').checked
+            });
+
+            const url = `${window.location.origin}/api?${params.toString()}`;
+            document.getElementById('previewImg').src = url;
+            document.getElementById('codeOutput').innerText = `![Stats](${url})`;
+        }
+
+        function copyToClipboard() {
+            const text = document.getElementById('codeOutput').innerText;
+            navigator.clipboard.writeText(text);
+            alert("Copied to clipboard!");
+        }
+
+        window.onload = update;
+    </script>
+</body>
+</html>
