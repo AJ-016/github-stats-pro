@@ -1,28 +1,50 @@
-# 📊 GitHub Stats Pro
+# 📊 Stats Pro: The Ultimate Profile Architect
 
-A high-performance, customizable GitHub statistics generator with a focus on dark, matte aesthetics. Built with FastAPI and powered by GitHub GraphQL API.
+A high-performance, matte-black GitHub stats generator with a **Live Interactive Design Studio**. Built with FastAPI and designed for developers who want pixel-perfect control over their profile's aesthetic.
 
-<hr style="border: none; border-top: 1px solid #444;">
+## 🚀 Live Demo
+**[Build your card here →](https://github-stats-pro-seven.vercel.app/)**
 
+## ✨ Features
 
-## 🚀 Features
-* **Customizable UI:** Change colors, fonts, and sizes via a live dashboard.
-* **Dynamic Stats:** Toggle Account Age, Top Repo, Primary Stack, and more.
-* **Local-First:** Optimized for privacy and speed.
-* **Vercel Ready:** One-click deployment.
+*   **🎨 Triple-Color Engine:** Independent color pickers for **Username**, **Value Text**, and **Muted Labels**.
+*   **⚡ Live Interactive Studio:** Real-time SVG preview with a built-in "Copy Link" tool.
+*   **⚙️ 10+ Toggleable Stats:** Choose what to show:
+    *   *Identity:* Account Age, Top Project, Tech Stack.
+    *   *Activity:* Commits, Total Stars, PRs, Issues Closed, PR Reviews, Fork Count.
+*   **📏 Precision Layout:** Dynamic SVG scaling with adjustable **Font Size** and **Border Radius**.
+*   **🎯 Reset & Quick-Start:** One-click reset to a professional "Identity-only" view.
 
-<hr style="border: none; border-top: 1px solid #444;">
+## 🛠️ Technical Stack
 
-## 🛠️ Setup
-1. Clone the repo.
-2. Install dependencies: `pip install -r requirements.txt`
-3. Add your `GITHUB_TOKENS` to a `.env` file.
-4. Run locally: `uvicorn api.index:app --reload --port 8001`
+*   **Backend:** FastAPI (Python)
+*   **Frontend:** Tailwind CSS & Vanilla JS
+*   **Data:** GitHub GraphQL API (v4)
+*   **Architecture:** Zero-dependency SVG rendering for maximum speed.
 
-<hr style="border: none; border-top: 1px solid #444;">
+## 📦 Local Setup
 
-## 🎨 Usage
-Simply use the generated Markdown link in your profile:
-`![Stats](https://your-app.vercel.app/api?username=AJ-016&theme=matte)`
+1.  **Clone the repo:**
+* `git clone [https://github.com/AJ-016/github-stats-pro.git]https://github.com/AJ-016/github-stats-pro.git)`
+* `cd stats-pro`
+2. **Install dependencies**:
+* ```pip install -r requirements.txt```
 
-Created with ❤️ by ALWIN K J
+3. **Environment Variables:**
+  Create a `.env` file and add your GitHub token:
+ * `GITHUB_TOKENS=your_token_here`
+
+4. **Run the Studio**:
+* `uvicorn api.index:app --reload --port 8001`
+
+## 🛡️ Privacy & Performance
+
+This project is built with a **local-first** philosophy. 
+- **No Tracking:** We don't log your GitHub data.
+- **Secure:** Your GitHub tokens are never exposed to the frontend.
+- **Efficient:** Optimized for low VRAM usage and high concurrency.
+
+## 📜 License
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+*Built with* ♥️ *by [Alwin K J](https://github.com/AJ-016)*
