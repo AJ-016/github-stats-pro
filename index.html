@@ -2,151 +2,141 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>GitHub Stats Pro | Ultimate Customizer</title>
+    <title>Stats Pro | Interactive Designer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background: #050505; color: #e5e5e5; font-family: 'Inter', sans-serif; }
-        .ctrl-panel { background: #0d1117; border: 1px solid #1a1a1a; }
-        .input-box { background: #161b22; border: 1px solid #30363d; color: white; border-radius: 6px; padding: 8px; width: 100%; }
-        input[type="range"] { accent-color: #3b82f6; }
+        .ctrl-panel { background: #0d1117; border-right: 1px solid #1a1a1a; }
+        .input-box { background: #161b22; border: 1px solid #30363d; color: white; border-radius: 6px; padding: 6px; width: 100%; font-size: 12px; }
+        .tag { font-size: 9px; font-weight: 800; color: #3b82f6; text-transform: uppercase; border-bottom: 1px solid #1a1a1a; padding-bottom: 4px; margin-top: 15px; }
+        input[type="range"] { accent-color: #3b82f6; cursor: pointer; }
     </style>
 </head>
-<body class="flex flex-col lg:flex-row min-h-screen">
+<body class="flex flex-col lg:flex-row h-screen overflow-hidden">
 
-    <!-- Sidebar Controls -->
-    <div class="w-full lg:w-96 p-8 space-y-6 ctrl-panel border-r border-gray-900 overflow-y-auto">
-        <div>
-            <h1 class="text-2xl font-bold text-blue-500">Stats Pro</h1>
-            <p class="text-xs text-gray-500 uppercase tracking-widest">Ultimate Customizer</p>
-        </div>
+    <!-- SIDEBAR -->
+    <div class="w-full lg:w-96 p-6 ctrl-panel overflow-y-auto">
+        <header class="flex justify-between items-center mb-4">
+            <div>
+                <h1 class="text-xl font-black text-blue-500 italic">STATS PRO</h1>
+                <p class="text-[9px] text-gray-500 tracking-widest">MASTER CONTROL</p>
+            </div>
+            <button onclick="resetDefaults()" class="text-[10px] bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded border border-gray-700 transition">Reset</button>
+        </header>
         
         <div class="space-y-4">
-            <section>
-                <label class="text-xs font-bold text-gray-400">GITHUB USERNAME</label>
-                <input type="text" id="user" value="AJ-016" class="input-box mt-1 outline-none focus:border-blue-500">
+            <section><label class="text-[10px] font-bold text-gray-400">USERNAME</label>
+                <input type="text" id="user" value="AJ-016" class="input-box"></section>
+
+            <div class="grid grid-cols-2 gap-2">
+                <div><label class="text-[9px] text-gray-500">BG</label><input type="color" id="bg" value="#050505" class="w-full h-8 bg-transparent cursor-pointer"></div>
+                <div><label class="text-[9px] text-gray-500">BORDER</label><input type="color" id="border_clr" value="#1a1a1a" class="w-full h-8 bg-transparent cursor-pointer"></div>
+                <div><label class="text-[9px] text-blue-400 font-bold">USER CLR</label><input type="color" id="user_clr" value="#3b82f6" class="w-full h-8 bg-transparent cursor-pointer"></div>
+                <div><label class="text-[9px] text-gray-500">TITLE CLR</label><input type="color" id="title_clr" value="#ffffff" class="w-full h-8 bg-transparent cursor-pointer"></div>
+                <div><label class="text-[9px] text-gray-500">TEXT CLR</label><input type="color" id="text_clr" value="#888888" class="w-full h-8 bg-transparent cursor-pointer"></div>
+            </div>
+
+            <section class="space-y-3">
+                <div class="flex justify-between text-[9px] font-bold text-gray-500"><span>FONT SIZE</span><span id="fs_val" class="text-blue-400">14px</span></div>
+                <input type="range" id="font_size" min="12" max="22" value="14" step="1" oninput="updateVal('fs_val', this.value + 'px')" class="w-full h-1">
+                <div class="flex justify-between text-[9px] font-bold text-gray-400"><span>RADIUS</span><span id="rd_val" class="text-blue-400">12px</span></div>
+                <input type="range" id="radius" min="0" max="30" value="12" step="1" oninput="updateVal('rd_val', this.value + 'px')" class="w-full h-1">
             </section>
 
-            <section class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="text-xs font-bold text-gray-400">BG COLOR</label>
-                    <input type="color" id="bg" value="#050505" class="w-full h-10 mt-1 rounded cursor-pointer bg-transparent border-none">
-                </div>
-                <div>
-                    <label class="text-xs font-bold text-gray-400">BORDER CLR</label>
-                    <input type="color" id="border_clr" value="#1a1a1a" class="w-full h-10 mt-1 rounded cursor-pointer bg-transparent border-none">
-                </div>
-            </section>
+            <p class="tag">Identity Stats</p>
+            <div class="space-y-2 text-xs">
+                <div class="flex gap-2 items-center"><input type="checkbox" id="s_age" checked><input type="text" id="l_age" value="Member Since" class="input-box"></div>
+                <div class="flex gap-2 items-center"><input type="checkbox" id="s_repo" checked><input type="text" id="l_repo" value="Top Project" class="input-box"></div>
+                <div class="flex gap-2 items-center"><input type="checkbox" id="s_lang" checked><input type="text" id="l_lang" value="Tech Stack" class="input-box"></div>
+            </div>
 
-            <section class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="text-xs font-bold text-gray-400">TITLE COLOR</label>
-                    <input type="color" id="title_clr" value="#ffffff" class="w-full h-10 mt-1 rounded cursor-pointer bg-transparent border-none">
-                </div>
-                <div>
-                    <label class="text-xs font-bold text-gray-400">TEXT COLOR</label>
-                    <input type="color" id="text_clr" value="#888888" class="w-full h-10 mt-1 rounded cursor-pointer bg-transparent border-none">
-                </div>
-            </section>
+            <p class="tag">Activity Stats</p>
+            <div class="space-y-2 text-xs">
+                <div class="flex gap-2 items-center"><input type="checkbox" id="s_commits"><input type="text" id="l_commits" value="Commits" class="input-box"></div>
+                <div class="flex gap-2 items-center"><input type="checkbox" id="s_stars"><input type="text" id="l_stars" value="Total Stars" class="input-box"></div>
+                <div class="flex gap-2 items-center"><input type="checkbox" id="s_prs"><input type="text" id="l_prs" value="Pull Requests" class="input-box"></div>
+                <div class="flex gap-2 items-center"><input type="checkbox" id="s_issues"><input type="text" id="l_issues" value="Issues" class="input-box"></div>
+                <div class="flex gap-2 items-center"><input type="checkbox" id="s_reviews"><input type="text" id="l_reviews" value="Reviews" class="input-box"></div>
+                <div class="flex gap-2 items-center"><input type="checkbox" id="s_forks"><input type="text" id="l_forks" value="Forks" class="input-box"></div>
+            </div>
 
-            <section>
-                <label class="text-xs font-bold text-gray-400">FONT FAMILY</label>
-                <select id="font_family" class="input-box mt-1">
-                    <option value="Segoe UI">Segoe UI (Default)</option>
-                    <option value="JetBrains Mono">JetBrains Mono (Coding)</option>
-                    <option value="Inter">Inter (Clean)</option>
-                </select>
-            </section>
-
-            <section>
-                <label class="text-xs font-bold text-gray-400">FONT SIZE: <span id="fs_val">14</span>px</label>
-                <input type="range" id="font_size" min="12" max="20" value="14" class="w-full mt-2">
-            </section>
-
-            <section class="space-y-2 pt-2 border-t border-gray-800">
-                <label class="text-xs font-bold text-gray-400 block mb-2">VISIBLE STATS</label>
-                <div class="grid grid-cols-2 gap-2">
-                    <label class="flex items-center space-x-2 text-sm cursor-pointer"><input type="checkbox" id="show_age" checked class="accent-blue-500"> <span>Account Age</span></label>
-                    <label class="flex items-center space-x-2 text-sm cursor-pointer"><input type="checkbox" id="show_repo" checked class="accent-blue-500"> <span>Top Repo</span></label>
-                    <label class="flex items-center space-x-2 text-sm cursor-pointer"><input type="checkbox" id="show_lang" checked class="accent-blue-500"> <span>Stack</span></label>
-                    <label class="flex items-center space-x-2 text-sm cursor-pointer"><input type="checkbox" id="show_commits" checked class="accent-blue-500"> <span>Commits</span></label>
-                </div>
-            </section>
-        </div>
-
-        <div class="flex gap-2 pt-4">
-            <button onclick="update()" class="flex-1 bg-blue-600 hover:bg-blue-700 py-3 rounded-lg font-bold transition">Generate</button>
-            <button onclick="resetToDefault()" class="px-4 bg-gray-800 hover:bg-gray-700 rounded-lg transition" title="Reset Styles">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-            </button>
+            <button onclick="update()" class="w-full bg-blue-600 py-3 rounded-lg font-bold hover:bg-blue-700 transition mt-4 mb-8">Apply Changes</button>
         </div>
     </div>
 
-    <!-- Main Preview Area -->
-    <div class="flex-1 flex flex-col items-center justify-center p-12 space-y-8 bg-black">
-        <div class="p-6 bg-[#050505] border border-dashed border-gray-800 rounded-2xl shadow-2xl">
-            <img id="previewImg" src="" alt="Preview Loading..." class="max-w-full">
+    <!-- PREVIEW AREA -->
+    <div class="flex-1 flex flex-col items-center justify-center bg-black p-12">
+        <div class="p-6 bg-[#050505] border border-dashed border-gray-800 rounded-3xl">
+            <img id="previewImg" src="" alt="Preview">
         </div>
         
-        <div class="w-full max-w-2xl space-y-2">
-            <div class="flex justify-between items-center">
-                <span class="text-xs font-mono text-gray-600">MARKDOWN LINK</span>
-                <button onclick="copyToClipboard()" class="text-xs text-blue-500 hover:underline">Copy Link</button>
+        <div class="mt-8 w-full max-w-2xl">
+            <div class="flex justify-between items-center mb-2">
+                <p class="text-[9px] text-gray-600 font-mono uppercase">Markdown Output</p>
+                <button id="copyBtn" onclick="copyToClipboard()" class="text-[10px] text-blue-400 hover:text-blue-300 font-bold transition">Copy Link</button>
             </div>
-            <code id="codeOutput" class="block p-4 bg-[#0d1117] border border-gray-800 text-green-500 text-xs rounded-lg break-all"></code>
+            <code id="codeOutput" class="block p-4 bg-[#0d1117] border border-gray-800 text-blue-400 text-[10px] rounded-lg break-all"></code>
         </div>
     </div>
 
     <script>
-        const defaults = {
-            bg: "#050505",
-            title_clr: "#ffffff",
-            text_clr: "#888888",
-            border_clr: "#1a1a1a",
-            font_size: 14,
-            font_family: "Segoe UI"
-        };
+        function updateVal(id, val) {
+            document.getElementById(id).innerText = val;
+        }
 
-        function resetToDefault() {
-            document.getElementById('bg').value = defaults.bg;
-            document.getElementById('title_clr').value = defaults.title_clr;
-            document.getElementById('text_clr').value = defaults.text_clr;
-            document.getElementById('border_clr').value = defaults.border_clr;
-            document.getElementById('font_size').value = defaults.font_size;
-            document.getElementById('font_family').value = defaults.font_family;
+        function copyToClipboard() {
+            const code = document.getElementById('codeOutput').innerText;
+            const btn = document.getElementById('copyBtn');
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = "Copied!";
+                btn.classList.add("text-green-400");
+                setTimeout(() => {
+                    btn.innerText = "Copy Link";
+                    btn.classList.remove("text-green-400");
+                }, 2000);
+            });
+        }
+
+        function resetDefaults() {
+            document.getElementById('bg').value = '#050505';
+            document.getElementById('border_clr').value = '#1a1a1a';
+            document.getElementById('user_clr').value = '#3b82f6';
+            document.getElementById('title_clr').value = '#ffffff';
+            document.getElementById('text_clr').value = '#888888';
+            document.getElementById('font_size').value = 14;
+            document.getElementById('radius').value = 12;
+            updateVal('fs_val', '14px');
+            updateVal('rd_val', '12px');
+            ['s_age', 's_repo', 's_lang'].forEach(id => document.getElementById(id).checked = true);
+            ['s_commits', 's_stars', 's_prs', 's_issues', 's_reviews', 's_forks'].forEach(id => document.getElementById(id).checked = false);
             update();
         }
 
         function update() {
-            const u = document.getElementById('user').value.trim() || 'AJ-016';
-            const bg = document.getElementById('bg').value.replace('#', '');
-            const tc = document.getElementById('title_clr').value.replace('#', '');
-            const txt = document.getElementById('text_clr').value.replace('#', '');
-            const bc = document.getElementById('border_clr').value.replace('#', '');
-            const fs = document.getElementById('font_size').value;
-            const ff = document.getElementById('font_family').value;
-            
-            document.getElementById('fs_val').innerText = fs;
-
             const params = new URLSearchParams({
-                username: u, bg: bg, title_clr: tc, text_clr: txt, border_clr: bc,
-                font_size: fs, font_family: ff,
-                show_age: document.getElementById('show_age').checked,
-                show_repo: document.getElementById('show_repo').checked,
-                show_lang: document.getElementById('show_lang').checked,
-                show_commits: document.getElementById('show_commits').checked
+                username: document.getElementById('user').value || 'AJ-016',
+                bg: document.getElementById('bg').value.slice(1),
+                border_clr: document.getElementById('border_clr').value.slice(1),
+                user_clr: document.getElementById('user_clr').value.slice(1),
+                title_clr: document.getElementById('title_clr').value.slice(1),
+                text_clr: document.getElementById('text_clr').value.slice(1),
+                font_size: document.getElementById('font_size').value,
+                radius: document.getElementById('radius').value,
+                s_age: document.getElementById('s_age').checked, l_age: document.getElementById('l_age').value,
+                s_repo: document.getElementById('s_repo').checked, l_repo: document.getElementById('l_repo').value,
+                s_lang: document.getElementById('s_lang').checked, l_lang: document.getElementById('l_lang').value,
+                s_commits: document.getElementById('s_commits').checked, l_commits: document.getElementById('l_commits').value,
+                s_stars: document.getElementById('s_stars').checked, l_stars: document.getElementById('l_stars').value,
+                s_prs: document.getElementById('s_prs').checked, l_prs: document.getElementById('l_prs').value,
+                s_issues: document.getElementById('s_issues').checked, l_issues: document.getElementById('l_issues').value,
+                s_reviews: document.getElementById('s_reviews').checked, l_reviews: document.getElementById('l_reviews').value,
+                s_forks: document.getElementById('s_forks').checked, l_forks: document.getElementById('l_forks').value
             });
 
             const url = `${window.location.origin}/api?${params.toString()}`;
             document.getElementById('previewImg').src = url;
             document.getElementById('codeOutput').innerText = `![Stats](${url})`;
         }
-
-        function copyToClipboard() {
-            const text = document.getElementById('codeOutput').innerText;
-            navigator.clipboard.writeText(text);
-            alert("Copied to clipboard!");
-        }
-
         window.onload = update;
     </script>
 </body>
