@@ -27,6 +27,7 @@ async def get_stats(
     bg: str = "050505", border_clr: str = "1a1a1a",
     user_clr: str = "3b82f6", title_clr: str = "ffffff", text_clr: str = "888888",
     font_size: int = 14, radius: int = 12,
+    transparent: bool = False,  # New Parameter
     s_age: bool = True, s_repo: bool = True, s_lang: bool = True,
     s_commits: bool = True, s_stars: bool = True, s_prs: bool = True,
     s_issues: bool = True, s_reviews: bool = True, s_forks: bool = True,
@@ -63,6 +64,9 @@ async def get_stats(
     width = max(460, max_label_w + 250)
     height = 95 + (len(stats) * 30)
 
+    # Transparency Logic
+    bg_fill = "none" if transparent else f"#{bg}"
+    
     rows = "".join([f'<text x="30" y="{90 + (i * 30)}" class="label">{l}:</text><text x="{max_label_w + 60}" y="{90 + (i * 30)}" class="val">{v}</text>' for i, (l, v) in enumerate(stats)])
 
     return Response(content=f"""
@@ -72,7 +76,7 @@ async def get_stats(
             .label {{ font: 400 {font_size}px 'Segoe UI', sans-serif; fill: #{text_clr}; }}
             .val {{ font: 600 {font_size}px 'Segoe UI', sans-serif; fill: #{title_clr}; }}
         </style>
-        <rect width="{width-1}" height="{height-1}" x="0.5" y="0.5" rx="{radius}" fill="#{bg}" stroke="#{border_clr}"/>
+        <rect width="{width-1}" height="{height-1}" x="0.5" y="0.5" rx="{radius}" fill="{bg_fill}" stroke="#{border_clr}"/>
         <text x="30" y="50" class="user">{username.upper()}</text>
         {rows}
     </svg>
